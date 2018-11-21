@@ -1,6 +1,6 @@
 package jesusgsdev.games.ui
 
-import games.gameOfFifteen.newGameOfFifteen
+import jesusgsdev.games.gameOfFifteen.newGameOfFifteen
 import java.awt.Color
 
 object GameOfFifteenSettings : GameSettings("Game of fifteen", Color(0x909090)) {

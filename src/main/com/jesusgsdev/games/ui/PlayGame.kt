@@ -1,8 +1,8 @@
 // drawing based on https://github.com/bulenkov/2048
 package jesusgsdev.games.ui
 
-import board.Direction
-import games.game.Game
+import jesusgsdev.board.Direction
+import jesusgsdev.games.game.Game
 import java.awt.*
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent

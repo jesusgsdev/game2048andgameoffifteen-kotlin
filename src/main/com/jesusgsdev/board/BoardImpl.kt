@@ -1,6 +1,6 @@
 package jesusgsdev.board
 
-import board.Direction.*
+import jesusgsdev.board.Direction.*
 
 open class SquareBoardImpl(override val width: Int) : SquareBoard {
 
