@@ -2,6 +2,7 @@ package jesusgsdev.games.game2048
 
 import jesusgsdev.board.Cell
 import jesusgsdev.board.Direction
+import jesusgsdev.board.Direction.*
 import jesusgsdev.board.GameBoard
 import jesusgsdev.board.createGameBoard
 import jesusgsdev.games.game.Game
@@ -43,9 +44,7 @@ class Game2048(private val initializer: Game2048Initializer<Int>) : Game {
  */
 fun GameBoard<Int?>.addNewValue(initializer: Game2048Initializer<Int>) {
     val nextValue = initializer.nextValue(this)
-    if(nextValue != null) {
-        this.getAllCells().filter { it == nextValue.first }.forEach { this[it] = nextValue.second }
-    }
+    nextValue?.let { this.getAllCells().filter { it == nextValue.first }.forEach { this[it] = nextValue.second } }
 }
 
 /*
@@ -55,7 +54,11 @@ fun GameBoard<Int?>.addNewValue(initializer: Game2048Initializer<Int>) {
  * Return 'true' if the values were moved and 'false' otherwise.
  */
 fun GameBoard<Int?>.moveValuesInRowOrColumn(rowOrColumn: List<Cell>): Boolean {
-    TODO()
+    val list: List<Int> = rowOrColumn.map { this[it] }.moveAndMergeEqual { it -> it * 2 }
+
+    rowOrColumn.forEachIndexed { index, cell -> this[cell] = if (index < list.size) list[index] else null }
+
+    return list.isNotEmpty() && list.size < rowOrColumn.size
 }
 
 /*
@@ -64,5 +67,24 @@ fun GameBoard<Int?>.moveValuesInRowOrColumn(rowOrColumn: List<Cell>): Boolean {
  * Return 'true' if the values were moved and 'false' otherwise.
  */
 fun GameBoard<Int?>.moveValues(direction: Direction): Boolean {
-    TODO()
+    val baseRange = 1..width
+    val dir = if (direction in listOf(UP, LEFT)) baseRange else baseRange.reversed()
+    var valuesMoved = false
+
+    when (direction) {
+        UP, DOWN -> {
+            for (i in baseRange) {
+                val moved = moveValuesInRowOrColumn(getColumn(dir, i))
+                valuesMoved = valuesMoved || moved
+            }
+        }
+        LEFT, RIGHT -> {
+            for (i in baseRange) {
+                val moved = moveValuesInRowOrColumn(getRow(i, dir))
+                valuesMoved = valuesMoved || moved
+            }
+        }
+    }
+
+    return valuesMoved
 }

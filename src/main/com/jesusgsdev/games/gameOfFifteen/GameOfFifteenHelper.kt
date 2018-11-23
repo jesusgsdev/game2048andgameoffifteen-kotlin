@@ -11,5 +11,21 @@ package jesusgsdev.games.gameOfFifteen
  * Thus the initial permutation should be correct.
  */
 fun isEven(permutation: List<Int>): Boolean {
-    TODO()
+    val array = permutation.toMutableList()
+
+    var pos = 0
+    with(array) {
+        for (j in 1 until size) {
+            var i = j - 1
+            val value = this[j]
+            while (i >= 0 && this[i] > value) {
+                this[i + 1] = this[i]
+                pos++
+                i--
+            }
+            this[i + 1] = value
+        }
+    }
+
+    return pos % 2 == 0
 }
